@@ -2,20 +2,16 @@ import 'package:flutter/material.dart';
 
 class SensorTile extends StatelessWidget {
   final String title;
-  final double x;
-  final double y;
-  final double z;
+  final double? x;
+  final double? y;
+  final double? z;
 
-  const SensorTile({
-    super.key,
-    required this.title,
-    required this.x,
-    required this.y,
-    required this.z,
-  });
+  const SensorTile({super.key, required this.title, this.x, this.y, this.z});
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 4,
@@ -27,14 +23,20 @@ class SensorTile extends StatelessWidget {
           children: [
             Text(
               title,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 8),
-            Text('X: ${x.toStringAsFixed(2)}'),
-            Text('Y: ${y.toStringAsFixed(2)}'),
-            Text('Z: ${z.toStringAsFixed(2)}'),
+            if (x != null && y != null && z != null) ...[
+              Text('X: ${x!.toStringAsFixed(2)}'),
+              Text('Y: ${y!.toStringAsFixed(2)}'),
+              Text('Z: ${z!.toStringAsFixed(2)}'),
+            ] else if (x != null) ...[
+              Text('Valor: ${x!.toStringAsFixed(2)}'),
+            ] else ...[
+              const Text('Sem dados'),
+            ],
           ],
         ),
       ),
